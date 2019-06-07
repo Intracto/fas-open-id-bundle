@@ -1,10 +1,9 @@
 <?php
 
-namespace Intracto\FasOpenIdBudle;
+namespace Intracto\FasOpenIdBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class IntractoFasOpenIdBundle extends Bundle
+final class IntractoFasOpenIdBundle extends Bundle
 {
-
 }
