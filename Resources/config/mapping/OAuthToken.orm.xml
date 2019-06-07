@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                  http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+    <mapped-superclass name="Intracto\FasOpenIdBundle\Model\OAuthToken">
+
+        <field name="scope" column="scope" type="array"/>
+
+        <field name="accessToken" column="access_token" type="string" length="50" />
+
+        <field name="refreshToken" column="refresg_token" type="string" length="50" />
+
+        <field name="expiresIn" column="expires_in" type="datetime"/>
+    </mapped-superclass>
+</doctrine-mapping>
