@@ -9,67 +9,67 @@ class User implements UserInterface
     /**
      * @var string
      */
-    private $nationalInsuranceNumber;
+    protected $nationalInsuranceNumber;
 
     /**
      * @var string
      */
-    private $firstName;
+    protected $firstName;
 
     /**
      * @var string
      */
-    private $lastName;
+    protected $lastName;
 
     /**
      * @var string
      */
-    private $prefLanguage;
+    protected $prefLanguage;
 
     /**
      * @var string
      */
-    private $email;
+    protected $email;
 
     /**
      * @var string
      */
-    private $certIssuer;
+    protected $certIssuer;
 
     /**
      * @var string
      */
-    private $certSubject;
+    protected $certSubject;
 
     /**
      * @var string
      */
-    private $certSerialNumber;
+    protected $certSerialNumber;
 
     /**
      * @var string
      */
-    private $certCn;
+    protected $certCn;
 
     /**
      * @var string
      */
-    private $certGivenName;
+    protected $certGivenName;
 
     /**
      * @var string
      */
-    private $certSn;
+    protected $certSn;
 
     /**
      * @var string
      */
-    private $certMail;
+    protected $certMail;
 
     /**
      * @var array
      */
-    private $fasRoles;
+    protected $fasRoles;
 
     public function getNationalInsuranceNumber(): string
     {
@@ -237,7 +237,7 @@ class User implements UserInterface
     /**
      * @inheritDoc
      */
-    public function getPassword(): string
+    public function getPassword(): ?string
     {
         return '';
     }

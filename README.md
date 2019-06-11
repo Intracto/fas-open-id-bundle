@@ -72,3 +72,5 @@ security:
                 - intracto.fas_open_id.authenticator
 
 ```
+
+If you want to log out from FAS, add the `intracto.fas_open_id.logout_handler` to your firewall logout handlers.

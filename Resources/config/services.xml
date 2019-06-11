@@ -31,7 +31,7 @@
             <argument type="service" id="intracto.fas_open_id.oauth_client" />
         </service>
 
-        <service id="intracto.fas_open_id.logout_handler" class="Intracto\FasOpenIdBundle\Security\Logout\LogoutHandler" abstract="true">
+        <service id="intracto.fas_open_id.logout_handler" class="Intracto\FasOpenIdBundle\Security\Logout\LogoutHandler">
             <argument type="service" id="intracto.fas_open_id.oauth_client"/>
         </service>
     </services>
