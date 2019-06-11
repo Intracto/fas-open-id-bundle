@@ -1,7 +1,8 @@
 <?php
 
-namespace Intracto\FasOpenIdBudle\DependencyInjection;
+namespace Intracto\FasOpenIdBundle\DependencyInjection;
 
+use Intracto\FasOpenIdBundle\Service\FasOpenIdOAuthClient;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
@@ -10,24 +11,32 @@ class Configuration implements ConfigurationInterface
     /**
      * @inheritDoc
      */
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
-        $treeBuilder = new TreeBuilder('fas_open_id');
-        if (method_exists($treeBuilder, 'getRoodNode')) {
-            $root = $treeBuilder->getRootNode();
-        } else {
-            $root = $treeBuilder->root('fas_open_id');
-        }
+        $treeBuilder = new TreeBuilder('intracto_fas_open_id');
 
-        $root
+        $treeBuilder->getRootNode()
             ->children()
                 ->scalarNode('client_id')
+                    ->cannotBeEmpty()
+                    ->isRequired()
                     ->info('Client ID of your integration')
                 ->end()
                 ->scalarNode('client_secret')
+                    ->isRequired()
                     ->info('Client Secret of your integration')
                 ->end()
-                ->arrayNode('scopes')
+                ->arrayNode('scope')
+                    ->info('Define the scopes you want to use')
+                    ->scalarPrototype()->end()
+                ->end()
+                ->scalarNode('auth_path')
+                    ->isRequired()
+                    ->info('The path where the code will be catched')
+                ->end()
+                ->scalarNode('target_path')
+                    ->isRequired()
+                    ->info('The path where user will be redirected after login')
                 ->end()
             ->end();
 

@@ -1,10 +1,10 @@
 <?php
 
-namespace Intracto\FasOpenIdBudle\Model;
+namespace Intracto\FasOpenIdBundle\Model;
 
 use DateTime;
 
-abstract class OAuthToken implements OAuthTokenInterface
+class OAuthToken implements OAuthTokenInterface
 {
     /**
      * @var array
@@ -90,7 +90,7 @@ abstract class OAuthToken implements OAuthTokenInterface
     /**
      * @inheritDoc
      */
-    public function setExpiresIn(DateTime $expiresIn): self
+    public function setExpiresIn(DateTime $expiresIn): void
     {
         $this->expiresIn = $expiresIn;
     }

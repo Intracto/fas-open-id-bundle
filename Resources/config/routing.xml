@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<routes xmlns="http://symfony.com/schema/routing">
+    <route id="intracto_fas_open_id.login" path="/fas/login/{acrValue}">
+        <default key="_controller">intracto.fas_open_id.controller.authentication::login</default>
+    </route>
+    <route id="intracto_fas_open_id.auth" path="/auth">
+        <default key="_controller">intracto.fas_open_id.controller.authentication::auth</default>
+    </route>
+</routes>

@@ -8,7 +8,7 @@
  * @license    MIT License
  */
 
-namespace Intracto\FasOpenIdBudle\Model;
+namespace Intracto\FasOpenIdBundle\Model;
 
 use DateTime;
 
