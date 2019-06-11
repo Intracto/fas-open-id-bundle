@@ -95,9 +95,12 @@ class FasOpenIdAuthenticator extends AbstractGuardAuthenticator
             return null;
         }
 
-        if (null === ($oauthToken = $this->oauthClient->getAccessToken($credentials['code']))) {
+        try {
+            $oauthToken = $this->oauthClient->getAccessToken($credentials['code']);
+        } catch (\Exception $exception) {
             return null;
         }
+
         $this->oauthToken = $oauthToken;
 
         if (null === ($userInfo = $this->oauthClient->getUserInfo($oauthToken))) {
@@ -112,7 +115,10 @@ class FasOpenIdAuthenticator extends AbstractGuardAuthenticator
 
         $this->userInfo = $userInfo;
         $user = new User();
-        $user->setNationalInsuranceNumber($userInfo->egovNRN);
+
+        if (in_array(FasOpenIdOAuthClient::SCOPE__EGOVNRN, $this->scope, true)) {
+            $user->setNationalInsuranceNumber($userInfo->egovNRN);
+        }
 
         if (in_array(FasOpenIdOAuthClient::SCOPE_PROFILE, $this->scope, true)) {
             $user->setFirstName($userInfo->surName);

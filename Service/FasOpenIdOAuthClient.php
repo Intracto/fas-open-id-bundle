@@ -7,6 +7,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class FasOpenIdOAuthClient
@@ -119,6 +120,16 @@ class FasOpenIdOAuthClient
         return $url;
     }
 
+    /**
+     * @param string $code
+     *
+     * @return OAuthToken|null
+     *
+     * @throws \Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
+     */
     public function getAccessToken(string $code): ?OAuthToken
     {
         $requestBody = [
@@ -138,8 +149,7 @@ class FasOpenIdOAuthClient
 
         $this->logger->error($response->getContent(false));
         $this->logger->error($response->getInfo('debug'));
-
-        return null;
+        throw new AuthenticationException('Failed to fetch access token');
     }
 
 
