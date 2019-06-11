@@ -31,7 +31,7 @@ class Configuration implements ConfigurationInterface
                     ->scalarPrototype()->end()
                 ->end()
                 ->scalarNode('auth_path')
-                    ->isRequired()
+                    ->defaultValue('intracto_fas_open_id.auth')
                     ->info('The path where the code will be catched')
                 ->end()
                 ->scalarNode('target_path')
