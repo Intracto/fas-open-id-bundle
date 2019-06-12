@@ -10,12 +10,15 @@
         "phpseclib/phpseclib": "^2.0",
         "symfony/framework-bundle": "^3.4 || ^4.0",
         "symfony/http-client": "^4.3",
-        "symfony/security": "^4.3",
+        "symfony/security": "^3.4 || ^4.3",
         "symfony/monolog-bundle": "^3.3"
     },
     "autoload": {
         "psr-4": {
             "Intracto\\FasOpenIdBundle\\": ""
         }
+    },
+    "require-dev": {
+        "symfony/phpunit-bridge": "^4.3"
     }
 }
