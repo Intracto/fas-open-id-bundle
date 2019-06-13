@@ -130,10 +130,10 @@ class FasOpenIdAuthenticator extends AbstractGuardAuthenticator
         }
 
         if (in_array(FasOpenIdOAuthClient::SCOPE_PROFILE, $this->scope, true)) {
-//            $user->setFirstName($userInfo->surName);
-//            $user->setLastName($userInfo->givenName);
-//            $user->setPrefLanguage($userInfo->PrefLanguage);
-//            $user->setEmail($userInfo->mail);
+            $user->setFirstName($userInfo->surName);
+            $user->setLastName($userInfo->givenName);
+            $user->setPrefLanguage($userInfo->PrefLanguage);
+            $user->setEmail($userInfo->mail);
         }
 
         if (in_array(FasOpenIdOAuthClient::SCOPE_CERTIFICATE_INFO, $this->scope, true)) {
