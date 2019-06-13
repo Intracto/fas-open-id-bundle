@@ -8,7 +8,7 @@
     </parameters>
 
     <services>
-        <service id="intracto.fas_open_id.oauth_client" class="Intracto\FasOpenIdBundle\Service\FasOpenIdOAuthClient" autowire="true">
+        <service id="intracto.fas_open_id.oauth_client" class="Intracto\FasOpenIdBundle\Service\FasOpenIdOAuthClient" autowire="true" public="true">
             <argument type="string"></argument>
             <argument type="string"></argument>
             <argument type="string"></argument>
@@ -17,6 +17,7 @@
             <argument type="service" id="router.default" />
             <argument type="service" id="monolog.logger" />
         </service>
+        <service id="Intracto\FasOpenIdBundle\Service\FasOpenIdOAuthClient" alias="intracto.fas_open_id.oauth_client" />
 
         <service id="intracto.fas_open_id.controller.authentication" class="Intracto\FasOpenIdBundle\Controller\AuthenticationController" public="true">
             <argument type="service" id="intracto.fas_open_id.oauth_client"/>
