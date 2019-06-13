@@ -38,7 +38,8 @@ class IntractoFasOpenIdExtension extends Extension
         $authenicatorDefinition = $container->getDefinition('intracto.fas_open_id.authenticator');
         $authenicatorDefinition->setArgument(0, $config['auth_path']);
         $authenicatorDefinition->setArgument(1, $config['target_path']);
-        $authenicatorDefinition->setArgument(2, $config['scope']);
-        $authenicatorDefinition->setArgument(3, $config['user_class']);
+        $authenicatorDefinition->setArgument(2, $config['login_path']);
+        $authenicatorDefinition->setArgument(3, $config['scope']);
+        $authenicatorDefinition->setArgument(4, $config['user_class']);
     }
 }

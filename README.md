@@ -58,6 +58,8 @@ Config parameters needed to get this bundle working:
 * `scope`: list of scopes that will be used by this application. Possible values are profile, egovnrn, certificateInfo, citizen, enterprise and roles. The role openid will automatically be used
 * `auth_path`: the route name where the `FasOpenIdAuthenticator` will check to authenticate the user. The default value for this parameter is `intracto_fas_open_id.auth`
 * `target_path`: the route name where the user will be redirected to on successful authentication
+* `login_path`: the route name where the user will be redirected to when he has to login
+* `user_class`: FQN of your user class, this is optional. Make sure your user extends the User class of this bundle
 
 #### Firewall configuration
 Then, you have to tell the firewall(s) of your application which authentictor should be used. Under the guard parameter of your firewall(s), you have to append the `intracto.fas_open_id.authenticator` to the authenticators parameter.

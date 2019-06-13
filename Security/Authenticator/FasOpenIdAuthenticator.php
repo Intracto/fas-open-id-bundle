@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
@@ -28,6 +29,11 @@ class FasOpenIdAuthenticator extends AbstractGuardAuthenticator
      * @var string
      */
     private $targetPath;
+
+    /**
+     * @var string
+     */
+    private $loginPath;
 
     /**
      * @var array
@@ -64,15 +70,17 @@ class FasOpenIdAuthenticator extends AbstractGuardAuthenticator
      *
      * @param string $authenticationPath
      * @param string $targetPath
+     * @param string $loginPath
      * @param array $scope
      * @param string $userClass
      * @param HttpUtils $httpUtils
      * @param FasOpenIdOAuthClient $oauthClient
      */
-    public function __construct(string $authenticationPath, string $targetPath, array $scope, string $userClass, HttpUtils $httpUtils, FasOpenIdOAuthClient $oauthClient)
+    public function __construct(string $authenticationPath, string $targetPath, string $loginPath, array $scope, string $userClass, HttpUtils $httpUtils, FasOpenIdOAuthClient $oauthClient)
     {
         $this->authenticationPath = $authenticationPath;
         $this->targetPath = $targetPath;
+        $this->loginPath = $loginPath;
         $this->scope = $scope;
         $this->userClass = $userClass;
         $this->httpUtils = $httpUtils;
@@ -190,7 +198,7 @@ class FasOpenIdAuthenticator extends AbstractGuardAuthenticator
      */
     public function start(Request $request, AuthenticationException $authException = null)
     {
-        return $this->httpUtils->createRedirectResponse($request, $this->targetPath);
+        return $this->httpUtils->createRedirectResponse($request, $this->loginPath);
     }
 
     public function createAuthenticatedToken(UserInterface $user, $providerKey)
