@@ -152,7 +152,6 @@ class FasOpenIdOAuthClient
         throw new AuthenticationException('Failed to fetch access token');
     }
 
-
     /**
      * Call to get user information from current user.
      *

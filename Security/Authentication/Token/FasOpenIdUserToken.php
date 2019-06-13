@@ -20,12 +20,12 @@ class FasOpenIdUserToken extends AbstractToken
 
     public function __construct(UserInterface $user, string $userInfo, OAuthToken $oauthToken, array $roles = [])
     {
-        parent::__construct($roles);
+        parent::__construct(['ROLE_USER']);
 
         $this->setUser($user);
         $this->userInfo = $userInfo;
-        $this->oauthToken = $$oauthToken;
-        $this->setAuthenticated(count($roles) > 0);
+        $this->oauthToken = $oauthToken;
+        $this->setAuthenticated(true);
     }
 
     /**

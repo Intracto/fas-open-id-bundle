@@ -2,6 +2,7 @@
 
 namespace Intracto\FasOpenIdBundle\DependencyInjection;
 
+use Intracto\FasOpenIdBundle\Security\User\User;
 use Intracto\FasOpenIdBundle\Service\FasOpenIdOAuthClient;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -37,6 +38,10 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('target_path')
                     ->isRequired()
                     ->info('The path where user will be redirected after login')
+                ->end()
+                ->scalarNode('user_class')
+                    ->defaultValue(User::class)
+                    ->info('If you extend the user class of this bundle, provide the FQN of your user class')
                 ->end()
             ->end();
 

@@ -28,12 +28,17 @@
             <argument type="string" />
             <argument type="string" />
             <argument/>
+            <argument type="string"/>
             <argument type="service" id="security.http_utils" />
             <argument type="service" id="intracto.fas_open_id.oauth_client" />
         </service>
 
         <service id="intracto.fas_open_id.logout_handler" class="Intracto\FasOpenIdBundle\Security\Logout\LogoutHandler">
             <argument type="service" id="intracto.fas_open_id.oauth_client"/>
+        </service>
+
+        <service id="intracto.fas_open_id.user_provider" class="Intracto\FasOpenIdBundle\Security\Provider\UserProvider">
+            <argument type="service" id="security.token_storage"/>
         </service>
     </services>
 </container>
