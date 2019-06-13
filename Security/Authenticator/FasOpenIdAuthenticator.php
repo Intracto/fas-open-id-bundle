@@ -106,6 +106,7 @@ class FasOpenIdAuthenticator extends AbstractGuardAuthenticator
         if (null === ($userInfo = $this->oauthClient->getUserInfo($oauthToken))) {
             return null;
         }
+        $this->userInfo = $userInfo;
 
         try {
             $userInfo = JwtTokenValidator::validateToken($userInfo, $this->oauthClient->getPublicKeys());
@@ -113,7 +114,6 @@ class FasOpenIdAuthenticator extends AbstractGuardAuthenticator
             return null;
         }
 
-        $this->userInfo = $userInfo;
         $user = new User();
 
         if (in_array(FasOpenIdOAuthClient::SCOPE__EGOVNRN, $this->scope, true)) {
