@@ -83,7 +83,7 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getFirstName(): string
+    public function getFirstName(): ?string
     {
         return $this->firstName;
     }
@@ -95,7 +95,7 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getLastName(): string
+    public function getLastName(): ?string
     {
         return $this->lastName;
     }
@@ -107,7 +107,7 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getPrefLanguage(): string
+    public function getPrefLanguage(): ?string
     {
         return $this->prefLanguage;
     }
@@ -119,7 +119,7 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getEmail(): string
+    public function getEmail(): ?string
     {
         return $this->email;
     }
@@ -131,7 +131,7 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getCertIssuer(): string
+    public function getCertIssuer(): ?string
     {
         return $this->certIssuer;
     }
@@ -143,7 +143,7 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getCertSubject(): string
+    public function getCertSubject(): ?string
     {
         return $this->certSubject;
     }
@@ -155,7 +155,7 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getCertSerialNumber(): string
+    public function getCertSerialNumber(): ?string
     {
         return $this->certSerialNumber;
     }
@@ -167,7 +167,7 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getCertCn(): string
+    public function getCertCn(): ?string
     {
         return $this->certCn;
     }
@@ -179,7 +179,7 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getCertGivenName(): string
+    public function getCertGivenName(): ?string
     {
         return $this->certGivenName;
     }
@@ -191,7 +191,7 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getCertSn(): string
+    public function getCertSn(): ?string
     {
         return $this->certSn;
     }
@@ -203,7 +203,7 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getCertMail(): string
+    public function getCertMail(): ?string
     {
         return $this->certMail;
     }
@@ -215,7 +215,7 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getFasRoles(): array
+    public function getFasRoles(): ?array
     {
         return $this->fasRoles;
     }

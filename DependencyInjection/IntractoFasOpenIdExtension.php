@@ -26,6 +26,7 @@ class IntractoFasOpenIdExtension extends Extension
         $oauthClientDefinition->setArgument(1, $config['client_secret']);
         $oauthClientDefinition->setArgument(2, $config['scope']);
         $oauthClientDefinition->setArgument(3, $config['auth_path']);
+        $oauthClientDefinition->setArgument(4, $config['base_uri']);
 
         if (!class_exists($config['user_class'])) {
             throw new \Exception('Please provide an existing class for the user_class');

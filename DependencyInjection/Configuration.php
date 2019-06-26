@@ -18,6 +18,11 @@ class Configuration implements ConfigurationInterface
 
         $treeBuilder->getRootNode()
             ->children()
+                ->scalarNode('base_uri')
+                    ->cannotBeEmpty()
+                    ->isRequired()
+                    ->info('Define base authentication uri')
+                ->end()
                 ->scalarNode('client_id')
                     ->cannotBeEmpty()
                     ->isRequired()
