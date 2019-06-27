@@ -9,21 +9,15 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class FasOpenIdUserToken extends AbstractToken
 {
     /**
-     * @var string
-     */
-    private $userInfo;
-
-    /**
      * @var OAuthToken
      */
     private $oauthToken;
 
-    public function __construct(UserInterface $user, string $userInfo, OAuthToken $oauthToken, array $roles = [])
+    public function __construct(UserInterface $user, OAuthToken $oauthToken, array $roles = [])
     {
         parent::__construct(['ROLE_USER']);
 
         $this->setUser($user);
-        $this->userInfo = $userInfo;
         $this->oauthToken = $oauthToken;
         $this->setAuthenticated(true);
     }
@@ -34,18 +28,6 @@ class FasOpenIdUserToken extends AbstractToken
     public function getCredentials()
     {
         return '';
-    }
-
-    public function getUserInfo(): string
-    {
-        return $this->userInfo;
-    }
-
-    public function setUserInfo(string $userInfo): self
-    {
-        $this->userInfo = $userInfo;
-
-        return $this;
     }
 
     public function getOauthToken(): OAuthToken

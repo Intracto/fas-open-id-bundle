@@ -65,6 +65,9 @@ Config parameters needed to get this bundle working:
 Then, you have to tell the firewall(s) of your application which authentictor should be used. Under the guard parameter of your firewall(s), you have to append the `intracto.fas_open_id.authenticator` to the authenticators parameter.
 ```yaml
 security:
+    providers:
+        intracto_fas_open_id_user_provider:
+            id: intracto.fas_open_id.user_provider
     ...
     my_firewall:
         ...
@@ -72,6 +75,7 @@ security:
             ...
             authenticators:
                 - intracto.fas_open_id.authenticator
+            provider: intracto_fas_open_id_user_provider
 
 ```
 

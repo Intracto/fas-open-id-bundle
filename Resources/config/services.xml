@@ -36,6 +36,9 @@
         </service>
 
         <service id="intracto.fas_open_id.user_provider" class="Intracto\FasOpenIdBundle\Security\Provider\UserProvider">
+            <argument type="service" id="intracto.fas_open_id.oauth_client"/>
+            <argument type="string"/>
+            <argument/>
         </service>
     </services>
 </container>

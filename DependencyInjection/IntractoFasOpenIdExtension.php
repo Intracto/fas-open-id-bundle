@@ -12,10 +12,7 @@ class IntractoFasOpenIdExtension extends Extension
 {
     public function load(array $configs, ContainerBuilder $container)
     {
-        $loader = new XmlFileLoader(
-            $container,
-            new FileLocator(__DIR__.'/../Resources/config')
-        );
+        $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');
 
         $configuration = new Configuration();
@@ -36,11 +33,13 @@ class IntractoFasOpenIdExtension extends Extension
             throw new \Exception('Make sure your user class implements UserInface ');
         }
 
-        $authenicatorDefinition = $container->getDefinition('intracto.fas_open_id.authenticator');
-        $authenicatorDefinition->setArgument(0, $config['auth_path']);
-        $authenicatorDefinition->setArgument(1, $config['target_path']);
-        $authenicatorDefinition->setArgument(2, $config['login_path']);
-        $authenicatorDefinition->setArgument(3, $config['scope']);
-        $authenicatorDefinition->setArgument(4, $config['user_class']);
+        $authenticatorDefinition = $container->getDefinition('intracto.fas_open_id.authenticator');
+        $authenticatorDefinition->setArgument(0, $config['auth_path']);
+        $authenticatorDefinition->setArgument(1, $config['target_path']);
+        $authenticatorDefinition->setArgument(2, $config['login_path']);
+
+        $userProviderDefinition = $container->getDefinition('intracto.fas_open_id.user_provider');
+        $userProviderDefinition->setArgument(1, $config['scope']);
+        $userProviderDefinition->setArgument(2, $config['user_class']);
     }
 }

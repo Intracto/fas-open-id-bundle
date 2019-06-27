@@ -4,14 +4,11 @@ namespace Intracto\FasOpenIdBundle\Security\Authenticator;
 
 use Intracto\FasOpenIdBundle\Model\OAuthToken;
 use Intracto\FasOpenIdBundle\Security\Authentication\Token\FasOpenIdUserToken;
-use Intracto\FasOpenIdBundle\Security\User\User;
+use Intracto\FasOpenIdBundle\Security\Provider\UserProvider;
 use Intracto\FasOpenIdBundle\Service\FasOpenIdOAuthClient;
-use Intracto\FasOpenIdBundle\Util\JwtTokenValidator;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
@@ -34,16 +31,6 @@ class FasOpenIdAuthenticator extends AbstractGuardAuthenticator
      * @var string
      */
     private $loginPath;
-
-    /**
-     * @var array
-     */
-    private $scope;
-
-    /**
-     * @var string
-     */
-    private $userClass;
 
     /**
      * @var HttpUtils
@@ -71,18 +58,14 @@ class FasOpenIdAuthenticator extends AbstractGuardAuthenticator
      * @param string $authenticationPath
      * @param string $targetPath
      * @param string $loginPath
-     * @param array $scope
-     * @param string $userClass
      * @param HttpUtils $httpUtils
      * @param FasOpenIdOAuthClient $oauthClient
      */
-    public function __construct(string $authenticationPath, string $targetPath, string $loginPath, array $scope, string $userClass, HttpUtils $httpUtils, FasOpenIdOAuthClient $oauthClient)
+    public function __construct(string $authenticationPath, string $targetPath, string $loginPath, HttpUtils $httpUtils, FasOpenIdOAuthClient $oauthClient)
     {
         $this->authenticationPath = $authenticationPath;
         $this->targetPath = $targetPath;
         $this->loginPath = $loginPath;
-        $this->scope = $scope;
-        $this->userClass = $userClass;
         $this->httpUtils = $httpUtils;
         $this->oauthClient = $oauthClient;
     }
@@ -106,65 +89,30 @@ class FasOpenIdAuthenticator extends AbstractGuardAuthenticator
     /**
      * @inheritDoc
      */
-    public function getUser($credentials, UserProviderInterface $userProvider)
+    public function getUser($credentials, UserProviderInterface $userProvider): ?UserInterface
     {
+        if (!$userProvider instanceof UserProvider) {
+            throw new \RuntimeException('Please provide the intracto_fas_open_id_user_provider as userprovider');
+        }
         if (null === $credentials['code']) {
-            return null;
+            throw new AuthenticationException('No authorization code provided');
         }
 
         try {
             $oauthToken = $this->oauthClient->getAccessToken($credentials['code']);
         } catch (\Exception $exception) {
-            return null;
+            throw new AuthenticationException($exception->getMessage());
         }
 
         $this->oauthToken = $oauthToken;
 
-        if (null === ($userInfo = $this->oauthClient->getUserInfo($oauthToken))) {
-            return null;
-        }
-        $this->userInfo = $userInfo;
-
-        try {
-            $userInfo = JwtTokenValidator::validateToken($userInfo, $this->oauthClient->getPublicKeys());
-        } catch (AuthenticationException $authenticationException) {
-            return null;
-        }
-
-        $user = new $this->userClass();
-
-        if (in_array(FasOpenIdOAuthClient::SCOPE__EGOVNRN, $this->scope, true)) {
-            $user->setNationalInsuranceNumber($userInfo->egovNRN);
-        }
-
-        if (in_array(FasOpenIdOAuthClient::SCOPE_PROFILE, $this->scope, true)) {
-            $user->setFirstName($userInfo->surName);
-            $user->setLastName($userInfo->givenName);
-            $user->setPrefLanguage($userInfo->PrefLanguage);
-            $user->setEmail($userInfo->mail);
-        }
-
-        if (in_array(FasOpenIdOAuthClient::SCOPE_CERTIFICATE_INFO, $this->scope, true)) {
-            $user->setCertIssuer($userInfo->cert_issuer);
-            $user->setCertSubject($userInfo->cert_subject);
-            $user->setCertSerialNumber($userInfo->cert_serialnumber);
-            $user->setCertCn($userInfo->cert_cn);
-            $user->setCertGivenName($userInfo->cert_givenname);
-            $user->setCertSn($userInfo->cert_sn);
-            $user->setCertMail($userInfo->cert_mail);
-        }
-
-        if (in_array(FasOpenIdOAuthClient::SCOPE_ROLES, $this->scope, true)) {
-            $user->setFasRoles($userInfo->roles);
-        }
-
-        return $user;
+        return $userProvider->creatUserByOAuthToken($oauthToken);
     }
 
     /**
      * @inheritDoc
      */
-    public function checkCredentials($credentials, UserInterface $user)
+    public function checkCredentials($credentials, UserInterface $user): bool
     {
         return true;
     }
@@ -172,7 +120,7 @@ class FasOpenIdAuthenticator extends AbstractGuardAuthenticator
     /**
      * @inheritDoc
      */
-    public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
+    public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response
     {
         return null;
     }
@@ -180,7 +128,7 @@ class FasOpenIdAuthenticator extends AbstractGuardAuthenticator
     /**
      * @inheritDoc
      */
-    public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
+    public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey): Response
     {
         return $this->httpUtils->createRedirectResponse($request, $this->targetPath);
     }
@@ -196,13 +144,13 @@ class FasOpenIdAuthenticator extends AbstractGuardAuthenticator
     /**
      * @inheritDoc
      */
-    public function start(Request $request, AuthenticationException $authException = null)
+    public function start(Request $request, AuthenticationException $authException = null): ?Response
     {
         return $this->httpUtils->createRedirectResponse($request, $this->loginPath);
     }
 
-    public function createAuthenticatedToken(UserInterface $user, $providerKey)
+    public function createAuthenticatedToken(UserInterface $user, $providerKey): TokenInterface
     {
-        return new FasOpenIdUserToken($user, $this->userInfo, $this->oauthToken);
+        return new FasOpenIdUserToken($user, $this->oauthToken);
     }
 }

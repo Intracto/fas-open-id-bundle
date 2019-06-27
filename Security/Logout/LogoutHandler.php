@@ -26,7 +26,10 @@ class LogoutHandler implements LogoutHandlerInterface
         $this->oauthClient = $oauthClient;
     }
 
-    public function logout(Request $request, Response $response, TokenInterface $token)
+    /**
+     * @inheritDoc
+     */
+    public function logout(Request $request, Response $response, TokenInterface $token): void
     {
         if ($token instanceof FasOpenIdUserToken) {
             $this->oauthClient->logOut($token->getOauthToken()->getIdToken());
