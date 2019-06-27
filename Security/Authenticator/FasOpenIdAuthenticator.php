@@ -43,11 +43,6 @@ class FasOpenIdAuthenticator extends AbstractGuardAuthenticator
     private $oauthClient;
 
     /**
-     * @var string
-     */
-    private $userInfo;
-
-    /**
      * @var OAuthToken
      */
     private $oauthToken;

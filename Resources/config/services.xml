@@ -22,11 +22,9 @@
 
         <service id="intracto.fas_open_id.authenticator" class="Intracto\FasOpenIdBundle\Security\Authenticator\FasOpenIdAuthenticator">
             <tag name="monolog.logger" channel="security" />
-            <argument type="string" />
-            <argument type="string" />
-            <argument type="string" />
-            <argument/>
-            <argument type="string"/>
+            <argument type="string" /> <!-- authenticationPath -->
+            <argument type="string" /> <!-- targetPath -->
+            <argument type="string" /> <!-- loginPath -->
             <argument type="service" id="security.http_utils" />
             <argument type="service" id="intracto.fas_open_id.oauth_client" />
         </service>
