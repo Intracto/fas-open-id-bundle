@@ -36,11 +36,6 @@ class UserProvider implements UserProviderInterface
     private $userClass;
 
     /**
-     * @var string
-     */
-    private $userInfo;
-
-    /**
      * UserProvider constructor.
      *
      * @param FasOpenIdOAuthClient $oauthClient
@@ -94,8 +89,6 @@ class UserProvider implements UserProviderInterface
         if (null === ($userInfo = $this->oauthClient->getUserInfo($oauthToken))) {
             throw new UsernameNotFoundException(sprintf('No username found for access token %s', $oauthToken->getAccessToken()));
         }
-        $this->userInfo = $userInfo;
-        $user->setUserInfo($userInfo);
 
         try {
             $userInfo = JwtTokenValidator::validateToken($userInfo, $this->oauthClient->getPublicKeys());
