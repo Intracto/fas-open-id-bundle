@@ -175,7 +175,7 @@ class FasOpenIdOAuthClient
         }
 
         try {
-            $response = $this->httpClient->request('GET', 'userinfo', ['auth_bearer' => 'lalal']);
+            $response = $this->httpClient->request('GET', 'userinfo', ['auth_bearer' => $oauthToken->getAccessToken()]);
         } catch (\Exception $e) {
             $this->logger->error($e->getMessage());
 
