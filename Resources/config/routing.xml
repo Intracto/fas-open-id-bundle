@@ -6,7 +6,4 @@
     <route id="intracto_fas_open_id.auth" path="/auth">
         <default key="_controller">intracto.fas_open_id.controller.authentication::auth</default>
     </route>
-    <route id="intracto_fas_open_id.logout" path="/fas-logout">
-        <default key="_controller">intracto.fas_open_id.controller.authentication::fasLogout</default>
-    </route>
 </routes>
