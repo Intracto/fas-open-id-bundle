@@ -27,6 +27,7 @@
             <argument type="string" /> <!-- loginPath -->
             <argument type="service" id="security.http_utils" />
             <argument type="service" id="intracto.fas_open_id.oauth_client" />
+            <argument type="service" id="session" />
         </service>
 
         <service id="intracto.fas_open_id.logout_handler" class="Intracto\FasOpenIdBundle\Security\Logout\LogoutHandler">

@@ -175,7 +175,7 @@ class FasOpenIdOAuthClient
         }
 
         try {
-            $response = $this->httpClient->request('GET', 'userinfo', ['auth_bearer' => $oauthToken->getAccessToken(),]);
+            $response = $this->httpClient->request('GET', 'userinfo', ['auth_bearer' => 'lalal']);
         } catch (\Exception $e) {
             $this->logger->error($e->getMessage());
 
@@ -212,6 +212,15 @@ class FasOpenIdOAuthClient
         }
     }
 
+    public function getLogoutUrl(string $idToken): string
+    {
+        $url = $this->baseUrl.'connect/endSession';
+        $url .= '?id_token_hint='.$idToken;
+        $url .= '&post_logout_redirect_uri='.$this->urlGenerator->generate('app.security.logout', [], UrlGeneratorInterface::ABSOLUTE_URL);
+
+        return $url;
+    }
+
     public function getPublicKeys(): array
     {
         $response = $this->httpClient->request('GET', 'connect/jwk_uri');
@@ -221,15 +230,6 @@ class FasOpenIdOAuthClient
         }
 
         return json_decode($response->getContent(false), false)->keys;
-    }
-
-    public function getLogoutUrl(string $jwtToken): string
-    {
-        $url = $this->baseUrl;
-        $url .= '?id_token_hint='.$jwtToken;
-        $url .= '&post_logout_redirect_uri='.$this->urlGenerator->generate('app.security.logout', [], UrlGeneratorInterface::ABSOLUTE_URL);
-
-        return $url;
     }
 
     public static function getAllPossibleScopes(): array

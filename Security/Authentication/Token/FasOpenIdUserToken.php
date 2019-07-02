@@ -41,4 +41,22 @@ class FasOpenIdUserToken extends AbstractToken
 
         return $this;
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function __serialize(): array
+    {
+        return [$this->oauthToken, parent::__serialize()];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function __unserialize(array $data): void
+    {
+        [$this->oauthToken, $parentData] = $data;
+
+        parent::__unserialize($parentData);
+    }
 }

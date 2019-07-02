@@ -76,7 +76,7 @@ class User implements UserInterface
         return $this->nationalInsuranceNumber;
     }
 
-    public function setNationalInsuranceNumber(string $nationalInsuranceNumber): self
+    public function setNationalInsuranceNumber(?string $nationalInsuranceNumber): self
     {
         $this->nationalInsuranceNumber = $nationalInsuranceNumber;
 
@@ -88,7 +88,7 @@ class User implements UserInterface
         return $this->firstName;
     }
 
-    public function setFirstName(string $firstName): self
+    public function setFirstName(?string $firstName): self
     {
         $this->firstName = $firstName;
 
@@ -100,7 +100,7 @@ class User implements UserInterface
         return $this->lastName;
     }
 
-    public function setLastName(string $lastName): self
+    public function setLastName(?string $lastName): self
     {
         $this->lastName = $lastName;
 
@@ -112,7 +112,7 @@ class User implements UserInterface
         return $this->prefLanguage;
     }
 
-    public function setPrefLanguage(string $prefLanguage): self
+    public function setPrefLanguage(?string $prefLanguage): self
     {
         $this->prefLanguage = $prefLanguage;
 
@@ -124,7 +124,7 @@ class User implements UserInterface
         return $this->email;
     }
 
-    public function setEmail(string $email): self
+    public function setEmail(?string $email): self
     {
         $this->email = $email;
 
@@ -136,7 +136,7 @@ class User implements UserInterface
         return $this->certIssuer;
     }
 
-    public function setCertIssuer(string $certIssuer): self
+    public function setCertIssuer(?string $certIssuer): self
     {
         $this->certIssuer = $certIssuer;
 
@@ -148,7 +148,7 @@ class User implements UserInterface
         return $this->certSubject;
     }
 
-    public function setCertSubject(string $certSubject): self
+    public function setCertSubject(?string $certSubject): self
     {
         $this->certSubject = $certSubject;
 
@@ -160,7 +160,7 @@ class User implements UserInterface
         return $this->certSerialNumber;
     }
 
-    public function setCertSerialNumber(string $certSerialNumber): self
+    public function setCertSerialNumber(?string $certSerialNumber): self
     {
         $this->certSerialNumber = $certSerialNumber;
 
@@ -172,7 +172,7 @@ class User implements UserInterface
         return $this->certCn;
     }
 
-    public function setCertCn(string $certCn): self
+    public function setCertCn(?string $certCn): self
     {
         $this->certCn = $certCn;
 
@@ -184,7 +184,7 @@ class User implements UserInterface
         return $this->certGivenName;
     }
 
-    public function setCertGivenName(string $certGivenName): self
+    public function setCertGivenName(?string $certGivenName): self
     {
         $this->certGivenName = $certGivenName;
 
@@ -196,7 +196,7 @@ class User implements UserInterface
         return $this->certSn;
     }
 
-    public function setCertSn(string $certSn): self
+    public function setCertSn(?string $certSn): self
     {
         $this->certSn = $certSn;
 
@@ -208,7 +208,7 @@ class User implements UserInterface
         return $this->certMail;
     }
 
-    public function setCertMail(string $certMail): self
+    public function setCertMail(?string $certMail): self
     {
         $this->certMail = $certMail;
 
@@ -220,16 +220,17 @@ class User implements UserInterface
         return $this->fasRoles;
     }
 
-    public function setFasRoles(array $fasRoles): self
+    public function setFasRoles(?array $fasRoles): self
     {
         $this->fasRoles = $fasRoles;
 
         return $this;
     }
+
     /**
      * @inheritDoc
      */
-    public function getRoles()
+    public function getRoles(): array
     {
         return ['ROLE_USER'];
     }
@@ -261,7 +262,7 @@ class User implements UserInterface
     /**
      * @inheritDoc
      */
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
         // TODO: Implement eraseCredentials() method.
     }

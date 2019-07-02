@@ -2,7 +2,6 @@
 
 namespace Intracto\FasOpenIdBundle\Security\Provider;
 
-use Intracto\FasOpenIdBundle\Model\OAuthToken;
 use Intracto\FasOpenIdBundle\Model\OAuthTokenInterface;
 use Intracto\FasOpenIdBundle\Security\User\User;
 use Intracto\FasOpenIdBundle\Service\FasOpenIdOAuthClient;
@@ -19,11 +18,6 @@ class UserProvider implements UserProviderInterface
      * @var FasOpenIdOAuthClient
      */
     private $oauthClient;
-
-    /**
-     * @var OAuthToken
-     */
-    private $oauthToken;
 
     /**
      * @var array
@@ -54,10 +48,6 @@ class UserProvider implements UserProviderInterface
      */
     public function loadUserByUsername($username): UserInterface
     {
-        // Load a User object from your data source or throw UsernameNotFoundException.
-        // The $username argument may not actually be a username:
-        // it is whatever value is being returned by the getUsername()
-        // method in your User class.
         throw new \Exception('TODO: fill in loadUserByUsername() inside '.__FILE__);
     }
 
@@ -70,8 +60,6 @@ class UserProvider implements UserProviderInterface
             throw new UnsupportedUserException(sprintf('Invalid user class "%s".', get_class($user)));
         }
 
-        // Return a User object after making sure its data is "fresh".
-        // Or throw a UsernameNotFoundException if the user no longer exists.
         return $user;
     }
 
@@ -97,28 +85,28 @@ class UserProvider implements UserProviderInterface
         }
 
         if (in_array(FasOpenIdOAuthClient::SCOPE__EGOVNRN, $this->scope, true)) {
-            $user->setNationalInsuranceNumber($userInfo->egovNRN);
+            $user->setNationalInsuranceNumber($userInfo->egovNRN ?? null);
         }
 
         if (in_array(FasOpenIdOAuthClient::SCOPE_PROFILE, $this->scope, true)) {
-            $user->setFirstName($userInfo->surname);
-            $user->setLastName($userInfo->givenName);
-            $user->setPrefLanguage($userInfo->prefLanguage);
-            $user->setEmail($userInfo->mail);
+            $user->setFirstName($userInfo->givenName ?? null);
+            $user->setLastName($userInfo->surname ?? null);
+            $user->setPrefLanguage($userInfo->prefLanguage ?? null);
+            $user->setEmail($userInfo->mail ?? null);
         }
 
         if (in_array(FasOpenIdOAuthClient::SCOPE_CERTIFICATE_INFO, $this->scope, true)) {
-            $user->setCertIssuer($userInfo->cert_issuer);
-            $user->setCertSubject($userInfo->cert_subject);
-            $user->setCertSerialNumber($userInfo->cert_serialnumber);
-            $user->setCertCn($userInfo->cert_cn);
-            $user->setCertGivenName($userInfo->cert_givenname);
-            $user->setCertSn($userInfo->cert_sn);
-            $user->setCertMail($userInfo->cert_mail);
+            $user->setCertIssuer($userInfo->cert_issuer ?? null);
+            $user->setCertSubject($userInfo->cert_subject ?? null);
+            $user->setCertSerialNumber($userInfo->cert_serialnumber ?? null);
+            $user->setCertCn($userInfo->cert_cn ?? null);
+            $user->setCertGivenName($userInfo->cert_givenname ?? null);
+            $user->setCertSn($userInfo->cert_sn ?? null);
+            $user->setCertMail($userInfo->cert_mail ?? null);
         }
 
         if (in_array(FasOpenIdOAuthClient::SCOPE_ROLES, $this->scope, true)) {
-            $user->setFasRoles($userInfo->roles);
+            $user->setFasRoles($userInfo->roles ?? null);
         }
 
         return $user;

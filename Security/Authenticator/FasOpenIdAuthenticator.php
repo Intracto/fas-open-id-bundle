@@ -8,6 +8,7 @@ use Intracto\FasOpenIdBundle\Security\Provider\UserProvider;
 use Intracto\FasOpenIdBundle\Service\FasOpenIdOAuthClient;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -48,6 +49,11 @@ class FasOpenIdAuthenticator extends AbstractGuardAuthenticator
     private $oauthToken;
 
     /**
+     * @var SessionInterface
+     */
+    private $session;
+
+    /**
      * FasOpenIdAuthenticator constructor.
      *
      * @param string $authenticationPath
@@ -56,13 +62,14 @@ class FasOpenIdAuthenticator extends AbstractGuardAuthenticator
      * @param HttpUtils $httpUtils
      * @param FasOpenIdOAuthClient $oauthClient
      */
-    public function __construct(string $authenticationPath, string $targetPath, string $loginPath, HttpUtils $httpUtils, FasOpenIdOAuthClient $oauthClient)
+    public function __construct(string $authenticationPath, string $targetPath, string $loginPath, HttpUtils $httpUtils, FasOpenIdOAuthClient $oauthClient, SessionInterface $session)
     {
         $this->authenticationPath = $authenticationPath;
         $this->targetPath = $targetPath;
         $this->loginPath = $loginPath;
         $this->httpUtils = $httpUtils;
         $this->oauthClient = $oauthClient;
+        $this->session = $session;
     }
 
     /**
@@ -89,6 +96,7 @@ class FasOpenIdAuthenticator extends AbstractGuardAuthenticator
         if (!$userProvider instanceof UserProvider) {
             throw new \RuntimeException('Please provide the intracto_fas_open_id_user_provider as userprovider');
         }
+
         if (null === $credentials['code']) {
             throw new AuthenticationException('No authorization code provided');
         }
@@ -117,7 +125,9 @@ class FasOpenIdAuthenticator extends AbstractGuardAuthenticator
      */
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response
     {
-        return null;
+        $this->session->getFlashBag()->add('danger', $exception->getMessage());
+
+        return $this->httpUtils->createRedirectResponse($request, $this->loginPath);
     }
 
     /**
