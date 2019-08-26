@@ -3,6 +3,7 @@
 namespace Intracto\FasOpenIdBundle\Service;
 
 use Intracto\FasOpenIdBundle\Model\OAuthToken;
+use Intracto\FasOpenIdBundle\Model\OAuthTokenInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,6 +28,7 @@ class FasOpenIdOAuthClient
     public const ACR_VALUES_SELF_REGISTRATION = 'urn:be:fedict:iam:fas:Level100';
 
     private const GRANT_TYPE_AUTHORIZATION_CODE = 'authorization_code';
+    private const GRANT_TYPE_REFRESH_TOKEN = 'refresh_token';
 
     /**
      * @var array
@@ -201,9 +203,13 @@ class FasOpenIdOAuthClient
         return null;
     }
 
-    public function logOut(string $idToken): void
+    public function logOut(OAuthTokenInterface $oauthToken): void
     {
-        $response = $this->httpClient->request('GET', 'connect/endSession', ['query' => ['id_token_hint' => $idToken]]);
+        if ($oauthToken->getExpiresIn() < new \DateTime()) {
+        }
+        $oauthToken = $this->getRefreshToken($oauthToken->getRefreshToken());
+
+        $response = $this->httpClient->request('GET', 'connect/endSession', ['query' => ['id_token_hint' => $oauthToken->getIdToken()]]);
 
         if (Response::HTTP_NO_CONTENT !== $response->getStatusCode()) {
             $this->logger->error($response->getInfo('debug'), ['status_code' => $response->getStatusCode()]);
@@ -247,8 +253,15 @@ class FasOpenIdOAuthClient
 
     private function getRefreshToken(string $refreshToken): ?OAuthToken
     {
-        $requestBody = json_encode(['grant_type' => self::GRANT_TYPE_REFRESH_TOKEN, 'refresh_token' => $refreshToken]);
-        $response = $this->httpClient->request('POST', 'access_token', ['auth_basic' => [$this->clientId, $this->clientSecret], 'body' => $requestBody]);
+        $requestBody = [
+            'grant_type' => self::GRANT_TYPE_REFRESH_TOKEN,
+            'refresh_token' => $refreshToken,
+        ];
+
+        $response = $this->httpClient->request('POST', 'access_token', [
+            'body' => $requestBody,
+            'auth_basic' => [$this->clientId, $this->clientSecret],
+        ]);
 
         if (Response::HTTP_OK === $response->getStatusCode()) {
             return $this->createAccessTokenFromResponse($response->toArray(false));

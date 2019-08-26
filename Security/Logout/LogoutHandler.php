@@ -32,7 +32,7 @@ class LogoutHandler implements LogoutHandlerInterface
     public function logout(Request $request, Response $response, TokenInterface $token): void
     {
         if ($token instanceof FasOpenIdUserToken) {
-            $this->oauthClient->logOut($token->getOauthToken()->getIdToken());
+            $this->oauthClient->logOut($token->getOauthToken());
         }
     }
 }
