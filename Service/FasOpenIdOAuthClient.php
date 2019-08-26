@@ -206,8 +206,8 @@ class FasOpenIdOAuthClient
     public function logOut(OAuthTokenInterface $oauthToken): void
     {
         if ($oauthToken->getExpiresIn() < new \DateTime()) {
+            $oauthToken = $this->getRefreshToken($oauthToken->getRefreshToken());
         }
-        $oauthToken = $this->getRefreshToken($oauthToken->getRefreshToken());
 
         $response = $this->httpClient->request('GET', 'connect/endSession', ['query' => ['id_token_hint' => $oauthToken->getIdToken()]]);
 
