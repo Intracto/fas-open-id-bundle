@@ -209,6 +209,12 @@ class FasOpenIdOAuthClient
             $oauthToken = $this->getRefreshToken($oauthToken->getRefreshToken());
         }
 
+        if (null === $oauthToken) {
+            $this->logger->error('Failed to fetch refresh token');
+
+            return;
+        }
+
         $response = $this->httpClient->request('GET', 'connect/endSession', ['query' => ['id_token_hint' => $oauthToken->getIdToken()]]);
 
         if (Response::HTTP_NO_CONTENT !== $response->getStatusCode()) {
