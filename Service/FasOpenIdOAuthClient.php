@@ -214,7 +214,7 @@ class FasOpenIdOAuthClient
         if (Response::HTTP_NO_CONTENT !== $response->getStatusCode()) {
             $this->logger->error($response->getInfo('debug'), ['status_code' => $response->getStatusCode()]);
 
-            throw new \Exception($response->getContent(false));
+            return;
         }
     }
 
