@@ -3,7 +3,6 @@
 namespace Intracto\FasOpenIdBundle\DependencyInjection;
 
 use Intracto\FasOpenIdBundle\Security\User\User;
-use Intracto\FasOpenIdBundle\Service\FasOpenIdOAuthClient;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 

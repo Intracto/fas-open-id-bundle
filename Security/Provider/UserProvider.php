@@ -6,6 +6,7 @@ use Intracto\FasOpenIdBundle\Model\OAuthTokenInterface;
 use Intracto\FasOpenIdBundle\Security\User\User;
 use Intracto\FasOpenIdBundle\Service\FasOpenIdOAuthClient;
 use Intracto\FasOpenIdBundle\Util\JwtTokenValidator;
+use Intracto\FasOpenIdBundle\Util\UserInfoMapper;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
@@ -84,31 +85,6 @@ class UserProvider implements UserProviderInterface
             throw new UsernameNotFoundException($authenticationException->getMessage());
         }
 
-        if (in_array(FasOpenIdOAuthClient::SCOPE__EGOVNRN, $this->scope, true)) {
-            $user->setNationalInsuranceNumber($userInfo->egovNRN ?? null);
-        }
-
-        if (in_array(FasOpenIdOAuthClient::SCOPE_PROFILE, $this->scope, true)) {
-            $user->setFirstName($userInfo->givenName ?? null);
-            $user->setLastName($userInfo->surname ?? null);
-            $user->setPrefLanguage($userInfo->prefLanguage ?? null);
-            $user->setEmail($userInfo->mail ?? null);
-        }
-
-        if (in_array(FasOpenIdOAuthClient::SCOPE_CERTIFICATE_INFO, $this->scope, true)) {
-            $user->setCertIssuer($userInfo->cert_issuer ?? null);
-            $user->setCertSubject($userInfo->cert_subject ?? null);
-            $user->setCertSerialNumber($userInfo->cert_serialnumber ?? null);
-            $user->setCertCn($userInfo->cert_cn ?? null);
-            $user->setCertGivenName($userInfo->cert_givenname ?? null);
-            $user->setCertSn($userInfo->cert_sn ?? null);
-            $user->setCertMail($userInfo->cert_mail ?? null);
-        }
-
-        if (in_array(FasOpenIdOAuthClient::SCOPE_ROLES, $this->scope, true)) {
-            $user->setFasRoles($userInfo->roles ?? null);
-        }
-
-        return $user;
+        return UserInfoMapper::mapUserInfoToUserObject($user, $userInfo, $this->scope);
     }
 }

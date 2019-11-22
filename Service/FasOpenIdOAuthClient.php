@@ -9,6 +9,10 @@ use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class FasOpenIdOAuthClient
@@ -157,16 +161,16 @@ class FasOpenIdOAuthClient
     /**
      * Call to get user information from current user.
      *
-     * @param OAuthToken $oauthToken
-     *
-     * @throws ClientExceptionInterface
-     * @throws RedirectionExceptionInterface
-     * @throws ServerExceptionInterface
-     * @throws TransportExceptionInterface
+     * @param OAuthTokenInterface $oauthToken
      *
      * @return null|array
+     *
+     * @throws \Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
      */
-    public function getUserInfo(OAuthToken $oauthToken): ?string
+    public function getUserInfo(OAuthTokenInterface $oauthToken): ?string
     {
         if (!$this->verifyAccessToken($oauthToken->getAccessToken())) {
             $oauthToken = $this->getRefreshToken($oauthToken->getRefreshToken());
