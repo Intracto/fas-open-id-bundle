@@ -69,7 +69,7 @@ class UserProvider implements UserProviderInterface
      */
     public function supportsClass($class): bool
     {
-        return $class instanceof User;
+        return User::class === $class || \in_array(User::class, class_parents($class), true);
     }
 
     public function creatUserByOAuthToken(OAuthTokenInterface $oauthToken): UserInterface
