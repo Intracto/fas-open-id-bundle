@@ -5,8 +5,9 @@ namespace Intracto\FasOpenIdBundle\Security\Authentication\Token;
 use Intracto\FasOpenIdBundle\Model\OAuthToken;
 use Symfony\Component\Security\Core\Authentication\Token\AbstractToken;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Guard\Token\GuardTokenInterface;
 
-class FasOpenIdUserToken extends AbstractToken
+class FasOpenIdUserToken extends AbstractToken implements GuardTokenInterface
 {
     /**
      * @var OAuthToken
