@@ -17,7 +17,7 @@ class OAuthToken implements OAuthTokenInterface
     protected $accessToken;
 
     /**
-     * @var string
+     * @var string|null
      */
     protected $refreshToken;
 
@@ -66,7 +66,7 @@ class OAuthToken implements OAuthTokenInterface
     /**
      * @inheritDoc
      */
-    public function getRefreshToken(): string
+    public function getRefreshToken(): ?string
     {
         return $this->refreshToken;
     }
@@ -74,7 +74,7 @@ class OAuthToken implements OAuthTokenInterface
     /**
      * @inheritDoc
      */
-    public function setRefreshToken(string $refreshToken): void
+    public function setRefreshToken(?string $refreshToken): void
     {
         $this->refreshToken = $refreshToken;
     }

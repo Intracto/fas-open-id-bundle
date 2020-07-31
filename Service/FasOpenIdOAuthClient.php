@@ -173,6 +173,10 @@ class FasOpenIdOAuthClient
     public function getUserInfo(OAuthTokenInterface $oauthToken): ?string
     {
         if (!$this->verifyAccessToken($oauthToken->getAccessToken())) {
+            if (null === $oauthToken->getRefreshToken()) {
+                return null;
+            }
+
             $oauthToken = $this->getRefreshToken($oauthToken->getRefreshToken());
 
             if (null === $oauthToken) {
@@ -210,6 +214,10 @@ class FasOpenIdOAuthClient
     public function logOut(OAuthTokenInterface $oauthToken): void
     {
         if ($oauthToken->getExpiresIn() < new \DateTime()) {
+            if (null === $oauthToken->getRefreshToken()) {
+                return;
+            }
+
             $oauthToken = $this->getRefreshToken($oauthToken->getRefreshToken());
         }
 
@@ -301,7 +309,7 @@ class FasOpenIdOAuthClient
         $expires = (new \DateTime())->add(new \DateInterval(sprintf('PT%dS', $data['expires_in'])));
         $token = new OAuthToken();
         $token->setAccessToken($data['access_token']);
-        $token->setRefreshToken($data['refresh_token']);
+        $token->setRefreshToken($data['refresh_token'] ?? null);
         $token->setExpiresIn($expires);
         $token->setScope(explode(' ', $data['scope']));
         $token->setIdToken($data['id_token']);

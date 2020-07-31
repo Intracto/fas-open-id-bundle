@@ -21,8 +21,8 @@ interface OAuthTokenInterface
     public function setScope(array $scope): void;
     public function getAccessToken(): string;
     public function setAccessToken($accessToken): void;
-    public function getRefreshToken(): string;
-    public function setRefreshToken(string $refreshToken): void;
+    public function getRefreshToken(): ?string;
+    public function setRefreshToken(?string $refreshToken): void;
     public function getExpiresIn(): DateTime;
     public function setExpiresIn(DateTime $expiresIn): void;
     public function getIdToken(): string;
