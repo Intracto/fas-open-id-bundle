@@ -1,0 +1,14 @@
+# https://dependabot.com/docs/config-file/
+version: 1
+update_configs:
+  # Keep composer.json (& lockfiles) up to date as soon as
+  # new versions are published
+  - package_manager: "php"
+    directory: "/"
+    update_schedule: "weekly"
+    # Apply default reviewer and label to created pull requests
+    default_reviewers:
+      - "rjwebdev"
+    default_labels:
+      - "dependencies"
+    version_requirement_updates: "increase_versions"
