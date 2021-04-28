@@ -1,0 +1,13 @@
+version: 2
+updates:
+- package-ecosystem: composer
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "12:00"
+    timezone: Europe/Brussels
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: doctrine/doctrine-bundle
+    versions:
+    - 2.2.0
