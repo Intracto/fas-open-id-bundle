@@ -31,8 +31,8 @@ class JwtTokenValidator
 
         // Format data
         $signature = self::sanitizeAndBase64Decode($signature);
-        $n = self::sanitizeAndBase64Decode($keys[0]->n);
-        $e = self::sanitizeAndBase64Decode($keys[0]->e);
+        $n = self::sanitizeAndBase64Decode(array_values($keys)[0]->n);
+        $e = self::sanitizeAndBase64Decode(array_values($keys)[0]->e);
 
         $rsa = new RSA();
         $rsa->loadKey([
