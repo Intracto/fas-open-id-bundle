@@ -8,7 +8,7 @@
         "ext-json": "*",
         "doctrine/doctrine-bundle": "^1.12.13 || ^2.0",
         "phpseclib/phpseclib": "^2.0",
-        "symfony/framework-bundle": "^3.4 || ^4.3",
+        "symfony/framework-bundle": "^3.4 || ^4.3 || ^5.4",
         "symfony/http-client": "^4.4",
         "symfony/security": "^3.4.49 || ^4.4.24",
         "symfony/monolog-bundle": "^3.3"
